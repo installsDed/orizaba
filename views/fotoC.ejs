@@ -1,0 +1,54 @@
+<div class="galeria">
+    <div class="foto">
+            <img src="<%=img%>" class="img" alt="">
+    </div>
+    <div class="pie">
+        <t><%= objetos[0] %></t>
+    </div>
+</div>
+<div class="galeria">
+    <div class="foto">
+      <img src="<%=f2%>" class="img" alt="">  
+    </div>
+    <div class="pie">
+        <t><%= objetos[1] %></t>
+    </div>
+</div>
+
+<%if(tamaño>2){%>
+<div class="galeria">
+    <div class="foto">
+        <img src="<%=f3%>" class="img" alt="">
+            
+        </a>
+    </div>
+    <div class="pie">
+        <t><%= objetos[2] %></t>
+    </div>
+</div>
+<% }else{} %>
+<%if(tamaño>3){%>
+<div class="galeria">
+    <div class="foto">
+        <img src="<%=f4%>" class="img" alt="">
+            
+        </a>
+    </div>
+    <div class="pie">
+        <t><%= objetos[3] %></t>
+    </div>
+</div>
+
+<% }else{} %>
+<%if(tamaño>4){%>
+<div class="galeria">
+    <div class="foto">
+        <img src="<%=f5%>" class="img" alt="">
+            
+        </a>
+    </div>
+    <div class="pie">
+        <t><%= objetos[4] %></t>
+    </div>
+</div>
+<% }else{} %>

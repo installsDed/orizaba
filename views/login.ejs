@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesion</title>
+    <link rel="stylesheet" href="estilos6.css">
+</head>
+<body>
+    <div class="login">
+        <h2>Login</h2>
+        <form action="log" method="POST">
+            <input type="text" name="user" id="user" placeholder="usuario" required>
+            <input type="password" name="pass" id="pass" placeholder="contraseña" required>
+                <input type="submit" class="btn-log" value="login">
+        </form>
+        <!--<a href="/registro" class="btn-res">Registrar</a>-->
+    </div>
+    <script type="text/javascript" src="sweetAlert2.all.min.js"></script>
+<% if (typeof alert != "undefined"){%>
+    <script>
+        Swal.fire({
+            title: '<%= alertTitle %>',
+            text: '<%= alertMessage %>',
+            icon: '<%= alertIcon %>',
+            timer: '<%= timer %>'
+        }).then(()=>{
+            window.location = '/<%= ruta %>'
+        })
+    </script>
+<% } %> 
+</body>
+</html>

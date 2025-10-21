@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="foto.css"/>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <title>Laboratorio de visión</title>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1></h1>
+    <a class="logout-btn" href="practicas"><img style="margin-right: 5%;" src="atras.png" alt="cerrar">Regresar</a>
+  </div>
+
+  <div class="welcome">Laboratorio de visión artificial</div>
+
+  <div class="imgC">
+    <img class="img" src=<%=imV%> alt="">
+  </div>
+
+  <div class="status-section">
+    <h2 class="status-title">Status</h2>
+    <div class="status-box">
+       
+            <script>
+            $(document).ready(function (){
+                setInterval( function(){
+                    $('.status-box').load('/status');
+
+                }, 1000);
+            })
+            </script>
+    </div>
+
+    <div class="status-buttons">
+      <button class="status-btn" onclick="enviarHTTP('conectando')">Probar conexión</button>
+      <button class="status-btn" onclick="enviarHTTP('foto')">Sacar foto</button>
+      <button class="status-btn" onclick="enviarHTTP('evaluar')">Evaluar foto</button>
+        
+<script>
+  document.getElementById('imagen').addEventListener('change', function () {
+    if (this.files.length > 0) {
+      document.getElementById('subir').submit();
+    }
+  });
+
+  async function enviarHTTP(dato){
+      const datosParaEnviar = {
+        nombre: "instruccion",
+        valor: dato
+      };
+
+  try {
+      const respuesta = await fetch('/get', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosParaEnviar)
+      });
+
+      if (!respuesta.ok) {
+        throw new Error(`Error HTTP: ${respuesta.status}`);
+      }
+
+      } catch (error) {
+        console.error('Error al enviar datos:', error);
+      }
+    }
+</script>
+      
+    </div>
+  </div>
+
+</body>
+</html>

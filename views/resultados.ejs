@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css"/>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <title>Document</title>
+    <div class="head">
+
+        <div class="logo">
+            
+        </div>
+    
+        <nav class="navbar">
+            <% if (login) { %>
+                <img src="usu.png" class="img" alt="">
+                <a><%=name%></a>
+                <img src="sal.png" class="img" alt="">
+                <a href="logout">Logout</a>
+            <%} else { %>
+                <script>location.href='<%= ip %>login'</script>
+            <% } %>
+        </nav>
+    
+    </div>
+</head>
+<body>
+    <header class="content header">
+        <div class="parrafos">
+            Rutas en marcha
+        </div>
+    </header>
+    <div class="contenedor">
+        
+        
+    </div> 
+    
+            <div class="ti">
+                <%- include("tiempos")%>
+            <script>
+            $(document).ready(function (){
+                setInterval( function(){
+                    $('.ti').load('/recibir');
+
+                }, 1000);
+            })
+            </script>
+            </div>
+                
+            <script>
+                $(document).ready(function (){
+                setInterval( function(){
+                    $('.contenedor').load('/fotos');
+
+                }, 1000);
+            })
+            </script>
+
+</body>
+</html>

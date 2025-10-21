@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="rfid.css"/>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <title>Laboratorio de RFID</title>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1></h1>
+    <a class="logout-btn" href="practicas"><img style="margin-right: 5%;" src="atras.png" alt="cerrar">Regresar</a>
+  </div>
+
+  <div class="welcome">Laboratorio de RFID</div>
+
+  <div class="imgC">
+    <img class="img" src="Prfid.png" alt="">
+  </div>
+
+  <div class="status-section">
+    <h2 class="status-title">Status</h2>
+    <div class="status-box">
+      <script>
+            $(document).ready(function (){
+                setInterval( function(){
+                    $('.status-box').load('/status');
+
+                }, 1000);
+            })
+            </script>
+    </div>
+
+    <div class="status-buttons">
+      <button class="status-btn" onclick="enviarHTTP('conectando')">Probar conexión</button>
+      <button class="status-btn" onclick="mostrarInput()">Grabar TAG</button>
+
+  <div id="inputContainer">
+   <!--- <form id="subir" action="rfid-e" method="POST"> --->
+        <input type="text" id="tag" name="mensaje" placeholder="Escribe el TAG...">
+        <a class="logout-btn" id="cancel">Cancelar</a>
+    <!--</form>-->
+    
+  </div>
+      <button class="status-btn" onclick="enviarHTTP('leyendo')">Leer TAG</button>
+    </div>
+  </div>
+<script>
+  const inputContainer = document.getElementById('inputContainer');
+    function mostrarInput() {
+      
+      inputContainer.style.display = 'block';
+      document.getElementById('tag').focus(); 
+    }
+    document.getElementById('cancel').addEventListener('click', function(event){
+        inputContainer.style.display = 'none';
+    })
+    document.getElementById('tag').addEventListener('keydown', async function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); 
+        
+        let input =document.getElementById('tag')
+        //console.log(input)
+        enviarHTTP(input.value)
+        input.value=''
+        inputContainer.style.display = 'none';
+      }
+    });
+    async function enviarHTTP(dato){
+      const datosParaEnviar = {
+        nombre: "instruccion",
+        valor: dato
+      };
+
+  try {
+      const respuesta = await fetch('/get', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosParaEnviar)
+      });
+
+      if (!respuesta.ok) {
+        throw new Error(`Error HTTP: ${respuesta.status}`);
+      }
+
+      } catch (error) {
+        console.error('Error al enviar datos:', error);
+      }
+    }
+
+/*    function enviarDatos() {
+      //const valor = document.getElementById('tag').value;
+        document.getElementById('subir').submit();
+        //inputContainer.style.display = 'none';
+    }*/
+  </script>
+</body>
+</html>

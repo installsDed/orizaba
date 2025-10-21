@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css"/>    
+    <title>Laboratorio CIM</title>
+    <script src = "/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="sweetAlert2.all.min.js"></script>
+<div class="head">
+
+    <div class="logo">
+    <img src="import.png" class="img" alt="">
+      <form id="subir" action="nm" method="POST" enctype="multipart/form-data">
+      <div>
+        <input type="file" name="modelo" id="modelo" accept=".h5" />
+        <label class="input" for="modelo">Importar modelo</label>
+        
+      </div>
+    </form>  
+    <script>
+  document.getElementById('modelo').addEventListener('change', function () {
+    if (this.files.length > 0) {
+      document.getElementById('subir').submit();
+    }
+  });
+</script>
+
+    </div>
+
+    <nav class="navbar">
+       
+            <img src="mesita.png" class="img" alt="">
+            <a href="linea">Consultar mesas</a>
+        
+    </nav>
+
+</div>
+</head>
+<body>
+
+    <header class="content header">
+        <div class="parrafos">
+            Laboratorio CIM
+        </div>
+        <img src="RMA.png" class="imgca" alt="">
+        
+        <div class="titulo">
+            
+            <t>Programa tu ruta</t>
+        </div>
+        
+    </header>
+    <div class="opciones" style="font-size: 2.2ch;">
+        <h1>Mesa de recoleción</h1>
+        <br>
+        
+        <select id="mesaS">
+            <option selected="selected" value="0">Elige una mesa</option>
+            <option value="Mesa 1">Mesa principal</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+        </select>  
+    </div>
+    <br>
+    <br>
+    <div class="opciones">
+        <h1>Punto 1</h1>
+        <br>
+        <select id="punto1">
+            <option selected="selected" value="0">Elige una mesa</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+        </select> 
+        &ensp;<h1>Tiempo de espera </h1> <input type="number" value="0" id="p1" class="caja" min="0"/><h1>segundos</h1>  
+    </div>
+    <div class="opciones">
+        <h1>Punto 2</h1>
+        <br>
+        <select id="punto2">
+            <option selected="selected" value="0">Elige una mesa</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+        </select>
+        &ensp;<h1>Tiempo de espera </h1><input type="number" value="0" id="p2" class="caja"/><h1>segundos</h1> 
+    </div>
+        <div class="opciones">
+            <h1>Punto 3</h1>
+            <br>
+        <select id="punto3">
+            <option selected="selected" value="0">Elige una mesa</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+        </select>
+        &ensp;<h1>Tiempo de espera </h1><input type="number" value="0" id="p3" class="caja"/><h1>segundos</h1>
+        </div>
+          <div class="opciones">
+            <h1>Punto 4</h1>
+            <br>
+            <select id="punto4">
+            <option selected="selected" value="0">Elige una mesa</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+        </select>
+        &ensp;<h1>Tiempo de espera </h1><input type="number" value="0" id="p4" class="caja"/><h1>segundos</h1>
+          </div>       
+    
+          <script>
+            var socket = io()
+        
+            function prueba(){
+                socket.emit("mensaje", "soy ejs");    
+            }
+            let dropListM = document.getElementById('mesaS')
+            let dropList1 = document.getElementById('punto1');
+            let dropList2 = document.getElementById('punto2');
+            let dropList3 = document.getElementById('punto3');
+            let dropList4 = document.getElementById('punto4'); 
+            let Dropt1 = document.getElementById('p1');
+            let Dropt2 = document.getElementById('p2');
+            let Dropt3 = document.getElementById('p3');
+            let Dropt4 = document.getElementById('p4');   
+            let pS,p1,p2,p3,p4,t1,t2,t3,t4
+            dropListM.onchange = (ev)=>{
+                pS = dropListM.value
+                socket.emit("inicio", pS);  
+            }
+            
+            Dropt1.onchange = (ev)=>{
+                t1 = Dropt1.value
+                socket.emit("t1",t1)
+            }
+
+            Dropt2.onchange = (ev)=>{
+                t2 = Dropt2.value
+                socket.emit("t2",t2)
+            }
+
+            Dropt3.onchange = (ev)=>{
+                t3 = Dropt3.value
+                socket.emit("t3",t3)
+            }
+
+            Dropt4.onchange = (ev)=>{
+                t4 = Dropt4.value
+                socket.emit("t4",t4)
+            }
+
+            dropList1.onchange = (ev)=>{
+                p1 = dropList1.value
+                socket.emit("punto1", p1);  
+            }
+            
+            dropList2.onchange = (ev)=>{
+                p2 = dropList2.value
+                socket.emit("punto2", p2);
+            }
+            dropList3.onchange = (ev)=>{
+                p3 = dropList3.value
+                socket.emit("punto3", p3);
+            }
+            dropList4.onchange = (ev)=>{
+                p4 = dropList4.value
+                socket.emit("punto4", p4);    
+            } 
+            socket.on("boton", (msg)=>{
+                console.log(msg)
+            })
+    
+        </script>
+       <% if (typeof alert != "undefined"){%>
+        <script>
+            Swal.fire({
+                title: '<%= alertTitle %>',
+                text: '<%= alertMessage %>',
+                icon: '<%= alertIcon %>'
+            }).then(()=>{
+                window.location = '/<%= ruta %>'
+            })
+        </script>
+    <% } %>
+                  
+<div class="contenedor-botones">
+   
+       <div class="izquierda">
+           
+       </div>
+       <div class="centro">
+           <a class="myButton myButto" id="rutas" href="<%= ip %>proceso">Iniciar ruta</a>
+       </div>
+       <div class="derecha">
+        <a class="myButton" id="practicas" href="<%= ip %>practicas">Practicas</a>
+       </div>
+</div>
+
+
+
+</body>
+</html>
