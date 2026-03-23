@@ -31,15 +31,15 @@ var flag='subir.png'
 var client
 var diferencia
 var inicio, fin
-var fE, fR, ver, piezaD, mnsj="Error", rfidD, rfidr
+var fE, fR, ver=0, piezaD, mnsj="Error", rfidD, rfidr, red, redN=false
 var m1=false,m2=false,m3=false,m4=false,m5=false
-var msj
+var msj,errorF=false
 var cambios='Primer tiempo'
 var cambios1='Segundo tiempo'
 var cambios2='Tercer tiempo'
 var cambios3='Cuarto tiempo'
 var boton='0'
-var tarea1,tareaI,tarea2,tarea3,tarea4,esp1,esp2,esp3,esp4
+var tarea1,tareaI,tarea2,tarea3,tarea4,esp1,esp2,esp3,esp4, tareaV
 var lista_filtrada,lista_filtradaT,pieza
 var imgStat=false
 var nPieza
@@ -112,6 +112,9 @@ io.on('connection', (socket)=>{
         socket.on("inicio", (msg)=>{
             tareaI = msg;
         });
+        socket.on("inicioV", (msg)=>{
+            tareaV = msg;
+        });
         socket.on("t1", (msg)=>{
             esp1 = msg
         })
@@ -141,26 +144,7 @@ io.on('connection', (socket)=>{
         
 
    })
-/*
-const conexion = mysql.createConnection({
-    //host: process.env.DB_HOST,
-    //user: process.env.DB_USER,
-    //password: process.env.DB_PASSWORD,
-    //database: process.env.DB_DATABASE
-    host: '127.0.0.1',
-    port: '3306',
-    user: 'root',
-    password: '',
-    database: 'sesiones'
-});
 
-conexion.connect((error) => {
-    if(error){
-        console.log(error);
-    }
-    console.log("SQL");
-});
-*/
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -354,6 +338,7 @@ app.get('/inicio',(req,res)=>{
         cambios2='Tercer tiempo'
         cambios3='Cuarto tiempo'  
         tareaI=null
+        tareaV=null
         tarea1=null
         tarea2=null
         tarea3=null
@@ -393,13 +378,14 @@ app.get("/rfid", (req,res)=>{
 })
 app.get("/vision", (req,res)=>{
     if(imgStat){
-        flag='mesas/imgMesa1.jpg'
+        ver++
+        flag='mesas/imgMesa1.jpg?'+ver
     }else{
         mnsj="Necesitas sacar una foto"
         flag='subir.png'
     }
     
-    res.render('foto',{imV:flag})
+    res.render('foto')
 })
 var conexion=false
 app.post("/get",async(req,res)=>{
@@ -420,9 +406,6 @@ app.post("/get",async(req,res)=>{
     }else if(variable=="leyendo"&&m1){
         mnsj="Leyendo el TAG"
         cliente.publish("Mesa 1","rfidP")
-    }else if(variable&&m1){
-        mnsj="Grabando TAG"
-        cliente.publish("graba",variable)
     }else if(variable=="evaluar"&&m1){
         mnsj="Evaluando la imagen..."
         var check = PythonShell('interprete.py')
@@ -434,6 +417,9 @@ app.post("/get",async(req,res)=>{
     }else if(variable=="foto"&&m1){
         mnsj="Se esta tomando la fotografia..."
         cliente.publish("Mesa 1","camaraP")
+    }else if(variable&&m1){
+        mnsj="Grabando TAG"
+        cliente.publish("graba",variable)
     }else if(m1 == false){
         mnsj="Necesitas prender la mesa o establecer la conexión."
     }else{
@@ -480,16 +466,36 @@ app.post("/get",async(req,res)=>{
     cliente.on('connect',conectar)
     cliente.on('message',mensaje)
 })
-
+app.post("/aError",async(req,res)=>{
+    let variable = req.body?.valor
+    
+    
+    if(variable=="error"){
+       error=true
+        console.log("Marcando error")
+        res.status(204).end()
+        
+        
+        
+    }
+})
 app.get("/proceso", (req, res)=>{
     let marca=true
     let av=false
     var time = new PythonShell('tiempo.py')
     var red = new PythonShell('interprete.py')
     client = mqtt.connect('ws://172.20.208.15:8083/mqtt')
-    console.log("Tareas ",tareaI,tarea1, tarea2, tarea3, tarea4)
-    let lista_rutas = [tareaI,tarea1, tarea2, tarea3, tarea4]
+    console.log("Tareas ",tareaI,tarea1, tarea2, tarea3, tarea4, tareaV)
+    let lista_rutas = [tareaI,tarea1, tarea2, tarea3, tarea4,]
     let lista_tiempos=[esp1,esp2,esp3,esp4]
+    if (tareaV==0 || tareaV==null){
+        redN=false
+    }else if(tareaV==1){
+        redN=true
+    }else{
+        redN=false
+        console.log("Error 202, el sistema puede seguir funcionando pero hay que darle mantenimiento")
+    }
     // filtro para eliminar los ceros y null de la lista_rutas y tiempos
     lista_filtrada = lista_rutas.filter(element => element != 0 && element != null)
     lista_filtradaT =lista_tiempos.filter(element => element !=0&&element!=undefined)
@@ -546,7 +552,7 @@ app.get("/proceso", (req, res)=>{
        
     }
     function conectar(){
-                client.subscribe(lista_filtrada[0])
+                
                 client.subscribe('foto')
                 client.subscribe('rfid')
                 client.subscribe('fallo')
@@ -554,22 +560,25 @@ app.get("/proceso", (req, res)=>{
             
             function mensaje (topic, message){
                 //console.log(message)
-                
-                    if(topic=='fallo'){
+                try {
+                   if(topic=='fallo'){
+                        client.end()
                         res.render('index',{
                         alert: true,
                         alertTitle: "Error",
-                        alertMessage: msj,
-                        alertIcon: "Error con el sistema RFID",
+                        alertMessage: "Error con el sistema de sensor o RFID",
+                        alertIcon: "error",
                         ip: ip,
                         login: true,
                         ruta: "inicio", 
                         name: req.session.name                           
-                        });   
+                        });
+                          
                     }else
                     if(topic=='foto'){
                         //nPieza=message.toString()
-                        red.send(message.toString())
+                        if(redN){
+                            red.send(message.toString())
                         red.on('message',function(message){
                            console.log(message.toString())
                             nPieza=message.toString()
@@ -579,15 +588,20 @@ app.get("/proceso", (req, res)=>{
                                 console.log(error)
                             }
                         })
+                        }else{
+                            console.log("Evaluación Manual activada")
+                        }
+                        
                         imagen1=urls(lista_filtrada[0])
                     }
                     if(topic=='rfid'){
                             rfidr=message.toString()
                             client.publish("1/autonomo",lista_filtrada[0]+'R')
                             res.redirect('/traslado')  
-                    }
-                    
-                
+                    } 
+                } catch (error) {
+                 console.log("Error 203, sistema necesita mantenimiento")   
+                } 
                 
             }
     
@@ -698,36 +712,43 @@ app.get("/traslado",(req,res)=>{
                 console.log('salio mal la pick')
                 error=true
                 console.log('error rfid')
-            }else if(message=='sensor' && error==false){
+            }else if(message=='sensor' && errorF==false){
                 client.publish(lista_filtrada[contador],'entrega')
                 client.publish('1/jetsonescaner','Prendido')
                 client.publish(lista_filtrada[contador],'incorrecto')
                 console.log('salio mal la pick')
-                error=true
+                errorF=true
                 console.log('error sensor')
             }
         }
         //Sistema de comparacion de datos
         if(topic =='foto'){
             //piezaD=message.toString()
+            if(redN){
             red.send(message.toString())
-            red.on('message',function(message){
-                console.log(message.toString())
-                piezaD=message.toString()
-            })
-            red.end(function(error){
-                if(error){
-                    console.log(error)
-                }
-            })
+                        red.on('message',function(message){
+                            console.log(message.toString())
+                            piezaD=message.toString()
+                        })
+                        red.end(function(error){
+                            if(error){
+                                console.log(error)
+                            }
+                        })
+            }else{
+
+            }
+            
         }
         if(topic=='rfid' && error == false){
             rfidD=message.toString()
+            if(redN){
             var espera = new PythonShell('tiempo.py')
+            contador++
             espera.send(2)
             espera.on('message', function(message){
                 
-            contador++
+            
             console.log(piezaD==nPieza)
             console.log("3 ="+piezaD===nPieza)
             console.log("Primer pieza: "+nPieza)
@@ -754,7 +775,35 @@ app.get("/traslado",(req,res)=>{
   
             }
             })
-            
+        }else{
+            var espera = new PythonShell('tiempo.py')
+            contador++
+            espera.send(2)
+            espera.on('message', function(message){
+                if(rfidD == rfidr){
+                client.publish(lista_filtrada[contador],'entrega')
+                client.publish('1/jetsonescaner','Prendido')
+                client.publish(lista_filtrada[contador],'correcto')
+                console.log('salio bien la pick')
+                
+                //prender motor entregando lista filtrada[1]
+                
+                               
+                       
+            }else{
+                client.publish(lista_filtrada[contador],'entrega')
+                client.publish('1/jetsonescaner','Prendido')
+                client.publish(lista_filtrada[contador],'incorrecto')
+                console.log('salio mal la pick')
+                error=true
+                //prender motor entregando lista filtrada[1]
+                
+                
+  
+            }
+            })
+                
+        }
         }
         if(message=='Recibiendo'){
             client.publish(lista_filtrada[0],'entrega')
@@ -764,12 +813,15 @@ app.get("/traslado",(req,res)=>{
         }
         if(message=='Entregando'){
             
-            if(error==true){
+            if(error==true && c==0){
                      //prende el motor recibiendo lista filtrada[0]                                                      
                 client.publish(lista_filtrada[0], 'recibe')
                 
                 client.publish('1/jetsonescaner','Prendido')
                 client.publish('1/jetsonescaner','error')
+            }else if(error == true && c > 0){
+                client.publish('1/jetsonescaner', 'errorE')
+                c=0
             }
             if(c==1&&error==false){
                 //tiempo
@@ -948,21 +1000,28 @@ app.get("/traslado",(req,res)=>{
             }  
         }
         var tam=lista_filtrada.length
+        var iaM=redN
     client.on('connect', conectar)
     client.on('message',mensaje)
 
-    res.render('resultados',{ip: ip,login: true,name: req.session.name,objetos:lista_filtrada,tamaño:tam,img:imagen1,t1:cambios,t2:cambios1,t3:cambios2,t4:cambios3,f2:imagen2,f3:imagen3,f4:imagen4,f5:imagen5})  
+    res.render('resultados',{ip: ip,login: true,name: req.session.name,objetos:lista_filtrada,tamaño:tam,ia:iaM,img:imagen1,t1:cambios,t2:cambios1,t3:cambios2,t4:cambios3,f2:imagen2,f3:imagen3,f4:imagen4,f5:imagen5})  
     }
     
 })
 app.get('/recibir',(req,res)=>{
     
     var tam=lista_filtrada.length
-    res.render('tiempos',{t1:cambios,t2:cambios1,t3:cambios2,t4:cambios3,objetos:lista_filtrada,tamaño:tam})
+    var iaM=redN
+    res.render('tiempos',{t1:cambios,t2:cambios1,t3:cambios2,t4:cambios3,objetos:lista_filtrada,tamaño:tam,ia:iaM})
 })
+
 app.get("/status",(req,res)=>{
     
     res.render('status',{stat:mnsj})
+})
+app.get("/statusIMG",(req,res)=>{
+    
+    res.render('img',{imV:flag})
 })
 app.get('/fotos',(req,res)=>{
     var tam=lista_filtrada.length

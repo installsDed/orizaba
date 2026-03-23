@@ -65,6 +65,16 @@
             <option value="Mesa 5">Mesa 5</option>
         </select>  
     </div>
+    <div class="opciones" style="font-size: 2.2ch;">
+        <h1>Sistema de visión</h1>
+        <br>
+        
+        <select id="vision">
+            <option selected="selected" value="0">Manual</option>
+            <option value="1">Inteligencia artificial (Beta)</option>
+            
+        </select>  
+    </div>
     <br>
     <br>
     <div class="opciones">
@@ -123,6 +133,7 @@
                 socket.emit("mensaje", "soy ejs");    
             }
             let dropListM = document.getElementById('mesaS')
+            let dropListV = document.getElementById('vision')
             let dropList1 = document.getElementById('punto1');
             let dropList2 = document.getElementById('punto2');
             let dropList3 = document.getElementById('punto3');
@@ -136,7 +147,10 @@
                 pS = dropListM.value
                 socket.emit("inicio", pS);  
             }
-            
+            dropListV.onchange = (ev)=>{
+                pV = dropListM.value
+                socket.emit("inicioV", pV);  
+            }
             Dropt1.onchange = (ev)=>{
                 t1 = Dropt1.value
                 socket.emit("t1",t1)

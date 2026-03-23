@@ -17,7 +17,14 @@
   <div class="welcome">Laboratorio de visión artificial</div>
 
   <div class="imgC">
-    <img class="img" src=<%=imV%> alt="">
+    <script>
+            $(document).ready(function (){
+                setInterval( function(){
+                    $('.imgC').load('/statusIMG');
+
+                }, 1000);
+            })
+            </script>
   </div>
 
   <div class="status-section">
