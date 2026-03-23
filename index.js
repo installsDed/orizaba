@@ -151,7 +151,7 @@ const storage = multer.diskStorage({
         cb(null,'public')
     },
     filename: function (req, file, cb) {
-    cb(null, 'modelo.h5'); // Siempre guarda con el mismo nombre
+    cb(null, 'modelo_color.h5'); // Siempre guarda con el mismo nombre
     //cb(null, file.originalname)
   }
 })
