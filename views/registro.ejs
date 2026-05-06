@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="estilos6.css">
+</head>
+<body>
+    <div class="register">
+        <h2>Registrate</h2>
+        <form action="registros" method="post">
+            <label for="user">Usuario</label>
+            <input type="text" name="user" required>
+
+            <label for="pass">Contraseña</label>
+            <input type="password" name="pass" required>
+
+            <label for="pass">Autorización</label>
+            <input type="password" name="auto" required>
+            <div style="display: inline;">
+            <a href="/login" class="btn-cancel">Cancelar</a><input type="submit" class="btn-save" value="Save">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+@font-face {
+    font-family: vidaloka;
+    src: url(/fuentes/Vidaloka-Regular.ttf);
+}
+@font-face {
+    font-family: ox;
+    src: url(/fuentes/ConcertOne-Regular.ttf);
+}
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+body {
+    font-family: sans-serif;
+    place-items: center;
+    background-color: rgba(165, 119, 92, 0.555);
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 63px;
+    background: #171717;
+    width: 100%;
+    z-index: 100;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #fff;
+}
+
+
+.navbar {
+    display: flex;
+    margin-right: 10px;
+}
+
+.logo {
+    margin-left: 30px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-family: vidaloka;
+}
+
+.navbar a {
+    display: block;
+    padding: 20px 20px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.navbar a:hover {
+    background: #3f3f3f;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+p {
+    text-align: center;
+    margin: auto;
+    font-size: 3ch;
+    color: #000000;
+    -webkit-text-stroke: 0.5px white;
+    text-transform: uppercase;
+}
+
+.btn-home {
+    place-items: center;
+    margin-left: 43%;
+    
+}
+.parrafos{
+    text-align: center;
+    font-size: 5ch;
+    margin-top: 30px;
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+    font-family: ox;
+    -webkit-text-stroke: 4px rgb(112, 112, 112);
+    
+}
+.container2{
+    display: grid;
+    place-items: center;
+    margin-top: 45px;
+}
+
+.img{
+    width: 270px;
+    height: 270px;
+    margin-top: 60px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin-right: 150px;
+}
+footer{
+	position: fixed;
+	bottom: 0;
+}
+.footer-distributed{
+	background-color: #000000;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: left;
+	font: bold 16px sans-serif;
+	padding: 40px 50px 60px 50px;
+	margin-top: 80px;
+}
+.btn2{
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    color: rgb(0, 0, 0);
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 24px;
+    overflow: hidden;
+    margin: 10px 5px;
+    transition: 0.2s;
+    border: 8px solid #ffffff;
+}
+
+.btn2:hover{
+    background: #ffffff;
+    box-shadow: 0 0 10px #000000, 0 0 40px #000000, 0 0 80px #a945c7;
+    transition-delay: 0.1s;
+}
+
+.contenedor-btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+ @media (max-width: 768px) {
+
+    .title {
+        margin-bottom: 0;
+        font-size: 40px;
+    }
+
+    .navbar {
+        display: none;
+    }
+    .contenedor-btn{
+        display: block;
+        margin-left: 80px;
+    }
+    
+    .footer-distributed{
+        display: none;
+    }
+    .parrafos{
+        font-size: larger;
+    }
+}
+ .img2{
+    width: 20%;
+    height: 20%;
+    margin-top: 90px;
+    position: absolute;
+
+
+}
+
+#ocultar{
+
+    visibility: hidden;
+
+}
+#mostrar{
+
+    visibility: visible;
+}
+
+.container3{
+    display: flex;
+
+    margin-left: 30%;
+}
+.es{
+    margin-top:60px;
+}
+.contenedor{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5%;
+    
+}
+.contenedorIM{
+    display: flex;
+    justify-content: space-around;
+}
+.obj1{
+    background-color: #ffffff;
+    border-radius: 7px;
+    font-size: 2rem;
+    border: 4px solid #000000;
+}
+.imgcas{
+    height: 320px;
+    width: 360px;
+}
+.ima{
+    width: 400px;
+    margin: 0px auto;
+    padding: 15px 20px 30px 20px;
+    margin-top: 35px;
+    text-align: center !important;
+    background-color: #333232;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+.obj2{
+font-size: 10rem;
+text-align: center;
+-webkit-text-stroke: 3px rgb(202, 201, 201);
+justify-content: center;
+}
+.btn-rut{
+    width: 100%;
+    padding: 15px;
+    background-color: #ced4da;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: medium;
+    color: #000000;
+    text-align: center;
+    margin-top: 30px;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    box-shadow: 2px 5px 8px 0 rgb(235, 186, 122), 0 6px 20px 0 rgba(0,0,0,0.19);
+}

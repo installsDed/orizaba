@@ -1,0 +1,57 @@
+<div id="tiempo">
+    <%=t1%>
+</div>
+<%if(tamaño>2){%>
+    <div id="tiempo1">
+        <%=t2%>
+    </div>
+    <% }else{} %>
+    <%if(tamaño>3){%>
+        <div id="tiempo2">
+            <%=t3%>
+            
+        </div>
+        <% }else{} %>
+        <%if(tamaño>4){%>
+            <div id="tiempo3">
+
+                <%=t4%>
+            </div>
+            <% }else{} %>
+            
+<div class="opciones">
+    <a class = "btn-fin" id ="rutas" href="/recarga">Terminar ruta</a>
+</div>
+<%if(ia==false){%>
+       <div class="opciones">
+            <button class="btn-fin" onclick="enviarHTTP('error')">Marcar error en foto</button>
+            </div>     
+            <% }else{
+                
+            } %>
+
+<script>
+  async function enviarHTTP(dato){
+      const datosParaEnviar = {
+        nombre: "instruccion",
+        valor: dato
+      };
+
+  try {
+      const respuesta = await fetch('/aError', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosParaEnviar)
+      });
+
+      if (!respuesta.ok) {
+        throw new Error(`Error HTTP: ${respuesta.status}`);
+      }
+
+      } catch (error) {
+        console.error('Error al enviar datos:', error);
+      }
+    }
+</script>
