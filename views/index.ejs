@@ -136,7 +136,7 @@
                 if(data.ubicacion=='error'){
                     window.location.href = '/inicio';
                     return
-                }else{
+                }else if(data.ubicacion !=='proceso'){
                   window.location.href = '/' + data.ubicacion; 
                 return;   
                 }

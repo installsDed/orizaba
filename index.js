@@ -331,6 +331,7 @@ app.post("/aError",async(req,res)=>{
 app.get("/proceso", (req, res)=>{
     let marca=true
     var time = new PythonShell('tiempo.py')
+    labState.api.estado='proceso'
     console.log("Tareas ",labState.tareas.tareaI,labState.tareas.tarea1, labState.tareas.tarea2, labState.tareas.tarea3, labState.tareas.tarea4, labState.tareas.tareaV)
     let lista_rutas = [labState.tareas.tareaI,labState.tareas.tarea1, labState.tareas.tarea2, labState.tareas.tarea3, labState.tareas.tarea4,]
     let lista_tiempos=[labState.segundos.esp1,labState.segundos.esp2,labState.segundos.esp3,labState.segundos.esp4]
@@ -382,7 +383,6 @@ app.get("/proceso", (req, res)=>{
         console.log(message)
         console.log(labState.listas.lista_filtrada[0])
         
-        labState.api.estado='traslado'
         time.end()
 
           

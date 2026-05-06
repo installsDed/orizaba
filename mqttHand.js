@@ -86,7 +86,7 @@ client.on('message', (topic, message) => {
         }
         if(topic=='rfid'){
                 labState.rfid.rfidr=message.toString()
-                client.publish("1/autonomo",lista_filtrada[0]+'R')
+                client.publish("1/autonomo",labState.listas.lista_filtrada[0]+'R')
                 labState.api.estado='traslado'  
         }
     }else if(labState.api.estado=='vision' || labState.api.estado=='rfid'){
