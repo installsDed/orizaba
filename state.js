@@ -49,8 +49,8 @@ export const labState = {
         mnsj: "Error",
         msj: null,
         errorF: false,
-        error: false // error de modo manual y automatico (en automatico sucede por mala foto o rfid)
-        
+        error: false, // error de modo manual y automatico (en automatico sucede por mala foto o rfid)
+        flag: 'subir.png'
     },
 
     mesas: {

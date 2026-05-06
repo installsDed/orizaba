@@ -14,7 +14,7 @@ import { client } from './mqttHand.js';
 import { labState } from './state.js';
 
 
-var flag= "subir.png"
+//var flag= "subir.png"
 
 function tiempo (t) {
 
@@ -247,14 +247,8 @@ app.get("/rfid", (req,res)=>{
 })
 app.get("/vision", (req,res)=>{
     labState.api.estado='vision'
-    if(labState.estado.imgStat){
-        labState.estado.ver++
-        flag='mesas/imgMesa1.jpg?'+ver
-    }else{
-        labState.mensajes.mnsj="Necesitas sacar una foto"
-        flag='subir.png'
-    }
     
+    labState.mensajes.mnsj="Necesitas sacar una foto"
     res.render('foto')
 })
 
@@ -309,7 +303,7 @@ app.get("/status",(req,res)=>{
 })
 app.get("/statusIMG",(req,res)=>{
     
-    res.render('img',{imV:flag})
+    res.render('img',{imV:labState.mensajes.flag})
 })
 app.get('/fotos',(req,res)=>{
     var tam=labState.listas.lista_filtrada.length

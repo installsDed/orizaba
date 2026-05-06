@@ -104,6 +104,13 @@ client.on('message', (topic, message) => {
                 }else if(topic == 'foto'){
                     labState.mensajes.mnsj="El sistema saco la foto, si se muestra la imagen en pantalla puede empezar a evaluar la imagen"
                     labState.estado.imgStat=true
+                    if(labState.estado.imgStat){
+                            labState.estado.ver++
+                            labState.mensajes.flag='/mesas/imgMesa1.jpg?'+labState.estado.ver
+                        }else{
+                            
+                            labState.mensajes.flag='subir.png'
+                        }
                 }
     }else if(labState.api.estado=='estadoM'){
         if(topic=="m1"){
