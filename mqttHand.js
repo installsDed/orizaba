@@ -185,9 +185,6 @@ client.on('message', (topic, message) => {
                 client.publish(labState.listas.lista_filtrada[labState.cambios.contador],'correcto')
                 console.log('salio bien la pick')
                 
-                //prender motor entregando lista filtrada[1]
-                
-                               
                        
             }else{
                 client.publish(labState.listas.lista_filtrada[labState.cambios.contador],'entrega')
@@ -196,9 +193,7 @@ client.on('message', (topic, message) => {
                 console.log('salio mal la pick')
                 labState.mensajes.error=true
                 //prender motor entregando lista filtrada[1]
-                
-                
-  
+
             }
             })
         }else{
@@ -250,7 +245,7 @@ client.on('message', (topic, message) => {
                 
                 client.publish('1/jetsonescaner','Prendido')
                 labState.cambios.c=0
-            }
+            }else
 
             if(labState.cambios.c==1&&labState.mensajes.error==false){
                 //tiempo
