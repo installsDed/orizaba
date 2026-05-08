@@ -246,7 +246,9 @@ client.on('message', (topic, message) => {
                 client.publish('1/jetsonescaner','Prendido')
                 client.publish('1/jetsonescaner','error')
             }else if(labState.mensajes.error == true && labState.cambios.c > 0){
-                client.publish('1/jetsonescaner', 'errorE')
+                client.publish(labState.listas.lista_filtrada[0],'recibe')
+                
+                client.publish('1/jetsonescaner','Prendido')
                 labState.cambios.c=0
             }
 
@@ -373,57 +375,58 @@ client.on('message', (topic, message) => {
         }
         
         if(message=='listo'){
-                if(bandera==1){
+                if(labState.cambios.bandera==1){
                     labState.cambios.boton='1'
-                    labState.cambios.bandera = 0
                     
                     labState.mensajes.error = false
-                }
-            if(labState.cambios.c==labState.listas.lista_filtrada.length||labState.mensajes.error==true){
-                if(labState.mensajes.error==true){
-                    client.publish('1/autonomo',labState.listas.lista_filtrada[0]+'E')
-                    client.publish('1/jetsonescaner','error')
-                    labState.cambios.bandera = 1
-                }else if(labState.mensajes.error==false){
-                    labState.tiempos.fin=new Date();
-                    labState.tiempos.diferencia=(labState.tiempos.fin-labState.tiempos.inicio) 
-                    labState.cambios.t3=tiempo(labState.tiempos.diferencia)
-                    labState.cambios.boton='1'
-                    labState.cambios.bandera = 0
+                }else{
+                    if(labState.cambios.c==labState.listas.lista_filtrada.length||labState.mensajes.error==true){
+                        if(labState.mensajes.error==true){
+                            client.publish('1/autonomo',labState.listas.lista_filtrada[0]+'E')
+                            client.publish('1/jetsonescaner','error')
+                            labState.cambios.bandera = 1
+                        }else if(labState.mensajes.error==false){
+                            labState.tiempos.fin=new Date();
+                            labState.tiempos.diferencia=(labState.tiempos.fin-labState.tiempos.inicio) 
+                            labState.cambios.t3=tiempo(labState.tiempos.diferencia)
+                            labState.cambios.boton='1'
+                            labState.cambios.bandera = 0
+                            
+                        }
+                        
+                        
+                    }else{
+                        if(labState.cambios.c==0){
+                            client.publish('1/autonomo',labState.listas.lista_filtrada[1]+'E')
+                        if(labState.listas.lista_filtrada.length>0){
+                            labState.cambios.c=1 
                     
+                        }    
+                    }else if(labState.cambios.c==1){
+                        client.publish('1/autonomo',labState.listas.lista_filtrada[2]+'E')
+                        if(labState.listas.lista_filtrada.length>1){
+                        labState.cambios.c=2  
+                        
+                        }
+                        labState.tiempos.inicio=new Date()
+                    }else if(labState.cambios.c==2){
+                        client.publish('1/autonomo',labState.listas.lista_filtrada[3]+'E')
+                        if(labState.listas.lista_filtrada.length>2){
+                            labState.cambios.c=3
+                            
+                        }
+                        labState.tiempos.inicio=new Date()
+                        }else if(labState.cambios.c==3){
+                            client.publish('1/autonomo',labState.listas.lista_filtrada[4]+'E')
+                            if(labState.listas.lista_filtrada.length>3){
+                                labState.cambios.c=4
+                                
+                            } 
+                            labState.tiempos.inicio=new Date()
+                        }  
+                    } 
                 }
-                
-                
-            }else{
-                if(labState.cambios.c==0){
-                    client.publish('1/autonomo',labState.listas.lista_filtrada[1]+'E')
-                if(labState.listas.lista_filtrada.length>0){
-                    labState.cambios.c=1 
-             
-                }    
-            }else if(labState.cambios.c==1){
-                client.publish('1/autonomo',labState.listas.lista_filtrada[2]+'E')
-                if(labState.listas.lista_filtrada.length>1){
-                labState.cambios.c=2  
-                 
-                }
-                labState.tiempos.inicio=new Date()
-            }else if(labState.cambios.c==2){
-                client.publish('1/autonomo',labState.listas.lista_filtrada[3]+'E')
-                if(labState.listas.lista_filtrada.length>2){
-                    labState.cambios.c=3
                      
-                }
-                labState.tiempos.inicio=new Date()
-            }else if(labState.cambios.c==3){
-                client.publish('1/autonomo',labState.listas.lista_filtrada[4]+'E')
-                if(labState.listas.lista_filtrada.length>3){
-                    labState.cambios.c=4
-                     
-                } 
-                labState.tiempos.inicio=new Date()
-            }  
-            }          
             }
     }
 });

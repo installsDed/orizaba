@@ -198,6 +198,7 @@ app.get('/inicio',(req,res)=>{
         labState.segundos.esp2=null
         labState.segundos.esp3=null
         labState.segundos.esp4=null
+        labState.cambios.bandera = 0
         
         
            const cams = 'C:/Users/Laboratorio/Documents/mRsP_300625/public/mesas'
